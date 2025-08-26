@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 CATEGORY_CHOICES = [
     ('salario', 'Salario'),
     ('negócios', 'Negócios'),
-    ('investmento', 'Investmento'),
+    ('investimento', 'Investimento'),
     ('outros', 'Outros'),
 ]
 
