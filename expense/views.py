@@ -4,7 +4,7 @@ from .serializers import ExpenseSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from datetime import datetime
+from django.utils import timezone
 from django.db.models import Sum
 from django.db.models.functions import TruncMonth
 
@@ -13,8 +13,7 @@ from django.db.models.functions import TruncMonth
 
 
 def aggregate_by_current_month(user):
-    now = datetime.now()
-
+    now = timezone.now()
     return (
         Expense.objects
         .filter(user=user)

@@ -4,16 +4,16 @@ from .serializers import IncomeSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from datetime import datetime
 from django.db.models import Sum
 from django.db.models.functions import TruncMonth
+from django.utils import timezone
+
 
 # Functions to aggregate income data
 
 
 def aggregate_by_current_month(user):
-    now = datetime.now()
-
+    now = timezone.now()
     return (
         Income.objects
         .filter(user=user)
