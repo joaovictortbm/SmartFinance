@@ -12,34 +12,34 @@ API_KEY = os.getenv("OPENAI_API_KEY")
 os.environ["OPENAI_API_KEY"] = API_KEY
 
 
-def load_documents():
-    loader = PyPDFLoader("AI/PDFs/Financeiro.pdf")
-    docs = loader.load()
-    splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
-    chunks = splitter.split_documents(docs)
+# def load_documents():
+#     loader = PyPDFLoader("AI/PDFs/Financeiro.pdf")
+#     docs = loader.load()
+#     splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
+#     chunks = splitter.split_documents(docs)
 
-    return chunks
+#     return chunks
 
 
-def get_vectorstore(doc_texts):
+def get_vectorstore():
     persist_dir = "AI/vectorstore"
     embeddings = OpenAIEmbeddings()
-    if os.path.exists(persist_dir):
-        vs = Chroma(persist_directory=persist_dir,
-                    embedding_function=embeddings)
-    else:
-        vs = Chroma.from_documents(
-            documents=doc_texts,
-            embedding=embeddings,
-            persist_directory=persist_dir
-        )
-        vs.persist()
+    # if os.path.exists(persist_dir):
+    vs = Chroma(persist_directory=persist_dir,
+                embedding_function=embeddings)
+    # else:
+    #     vs = Chroma.from_documents(
+    #         documents=doc_texts,
+    #         embedding=embeddings,
+    #         persist_directory=persist_dir
+    #     )
+    vs.persist()
     return vs
 
 
 def generate_rag_response(user_data):
-    texts = load_documents()
-    vs = get_vectorstore(texts)
+    # texts = load_documents()
+    vs = get_vectorstore()
 
     retriever = vs.as_retriever(search_kwargs={"k": 3})
     llm = ChatOpenAI(model_name="gpt-4o", temperature=0)
