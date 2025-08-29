@@ -54,11 +54,9 @@ class IncomeListCreateView(ListCreateAPIView):
 
 
 class IncomeDetailView(RetrieveUpdateDestroyAPIView):
+    queryset = Income.objects.all()
     serializer_class = IncomeSerializer
     permission_classes = [IsAuthenticated]
-
-    def get_queryset(self):
-        return Income.objects.filter(user=self.request.user)
 
 
 class DashboardView(APIView):
