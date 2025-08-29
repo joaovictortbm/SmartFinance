@@ -13,6 +13,7 @@ CATEGORY_CHOICES = [
 class Income(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='incomes')
+    description = models.CharField(max_length=255, null=True, blank=True)
     amount = models.DecimalField(max_digits=25, decimal_places=2)
     date = models.DateField()
     category = models.CharField(max_length=50, choices=CATEGORY_CHOICES)

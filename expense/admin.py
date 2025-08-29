@@ -4,5 +4,5 @@ from .models import Expense
 
 @admin.register(Expense)
 class ExpenseAdmin(admin.ModelAdmin):
-    list_display = ('id', 'amount', 'category', 'date')
+    list_display = ('id', 'description', 'amount', 'category', 'date')
     list_filter = ('category', 'date')
