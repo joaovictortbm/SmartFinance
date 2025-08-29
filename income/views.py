@@ -4,26 +4,22 @@ from .serializers import IncomeSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from datetime import datetime, date
+from datetime import datetime
 from django.db.models import Sum
+from django.db.models.functions import TruncMonth
 
 # Functions to aggregate income data
 
 
 def aggregate_by_current_month(user):
     now = datetime.now()
-    first_day = date(now.year, now.month, 1)
-    if now.month == 12:
-        next_month = date(now.year + 1, 1, 1)
-    else:
-        next_month = date(now.year, now.month + 1, 1)
 
     return (
-        Income.objects.filter(
-            user=user,
-            date__gte=first_day,
-            date__lt=next_month
-        ).aggregate(total=Sum('amount'))['total'] or 0
+        Income.objects
+        .filter(user=user)
+        .annotate(month=TruncMonth('date'))
+        .filter(month__year=now.year, month__month=now.month)
+        .aggregate(total=Sum('amount'))['total'] or 0
     )
 
 
