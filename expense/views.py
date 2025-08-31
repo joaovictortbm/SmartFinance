@@ -37,7 +37,7 @@ class ExpenseListCreateView(ListCreateAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        queryset = Expense.objects.all()
+        queryset = Expense.objects.filter(user=self.request.user)
         params = self.request.query_params
 
         date = params.get('date')
@@ -56,9 +56,11 @@ class ExpenseListCreateView(ListCreateAPIView):
 
 
 class ExpenseDetailView(RetrieveUpdateDestroyAPIView):
-    queryset = Expense.objects.all()
     serializer_class = ExpenseSerializer
     permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Expense.objects.filter(user=self.request.user)
 
 
 class ExpenseDashboardView(APIView):
