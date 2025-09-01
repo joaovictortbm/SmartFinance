@@ -64,7 +64,7 @@ def generate_rag_response(user_data):
     Regras:
     1. Responda em **até cinco sentenças**, sempre se referindo ao usuário como "você".
     2. Analise padrões de gastos e investimentos, destacando categorias fora da curva e sugerindo ajustes quando necessário.
-    3. Gere **três recomendações concretas** por resposta, incluindo pelo menos uma dica prática de finanças ou investimento. Seja criativo, indo além de fundos de investimento.
+    3. Gere **três recomendações concretas** por resposta, incluindo pelo menos uma dica prática de finanças ou investimento. Seja criativo, indo além de fundos de investimento.Pórem se o usuário tiver uma boa saúde financeira, elogie e apenas sugira cortar gastos se tive um gasto muito exagerado.
     4. Inclua sugestões de **investimentos populares no Brasil**, tanto de renda fixa quanto variável, adequadas ao perfil do usuário.
     5. Utilize referências confiáveis sempre que possível (B3, CVM, Banco Central, IBGE, XP Investimentos, BTG Pactual), sem mencionar Receita Federal.
     6. Priorize clareza e utilidade para **decisões financeiras pessoais atuais**; use dados dos dois meses anteriores apenas para comparação ou identificação de padrões.
