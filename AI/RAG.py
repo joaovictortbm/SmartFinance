@@ -6,6 +6,7 @@ from langchain.chains import RetrievalQA
 from langchain.chat_models import ChatOpenAI
 import os
 from dotenv import load_dotenv
+from AI.FinnhubAPI import generate_asset_summary
 
 load_dotenv()
 API_KEY = os.getenv("OPENAI_API_KEY")
@@ -40,6 +41,7 @@ def get_vectorstore():
 def generate_rag_response(user_data):
     # texts = load_documents()
     vs = get_vectorstore()
+    stock_summary = generate_asset_summary()
 
     retriever = vs.as_retriever(search_kwargs={"k": 3})
     llm = ChatOpenAI(model_name="gpt-4o", temperature=0)
@@ -47,25 +49,31 @@ def generate_rag_response(user_data):
         llm=llm, chain_type="stuff", retriever=retriever)
 
     context = f"""
-    Você é um assistente financeiro ligado a um sistema de finanças pessoais. Dê respostas objetivas e concisas.
+    Você é um assistente financeiro pessoal, ligado a um sistema de finanças pessoais. Dê respostas objetivas e concisas.
+
     Dados do usuário extraídos do sistema de finanças pessoais:
     {user_data}
+
+    Resumo dos principais ativos do mercado atualmente:
+    {stock_summary}  
     """
 
     question = '''
-        Você é um assistente financeiro. Analise os dados do usuário e os documentos financeiros fornecidos, e gere respostas objetivas, concisas e acionáveis.
+    Você é um assistente financeiro. Analise os dados do usuário e os documentos financeiros fornecidos, e gere respostas objetivas, concisas e acionáveis.
 
-        Regras:
-        1. Responda em **até cinco sentenças**, sempre se referindo ao usuário como "você".
-        2. Inclua **fontes ou referências** sempre que possível, utilizando o documento PDF como base, mas nunca revele a seção do documento; cite a instituição ou estudo relevante.
-        3. Forneça **pelo menos uma dica prática de finanças ou investimento** por resposta; seja criativo e vá além de fundos de investimento.
-        4. Destaque categorias com gastos fora da curva ou exagerados, sugerindo ajustes se necessário.
-        5. Priorize clareza e utilidade para **decisões financeiras pessoais atuais**; use dados dos dois meses anteriores apenas para comparação ou identificação de padrões.
-        6. Nunca mencione que você é uma IA ou modelo de linguagem.
-        7. Sempre que possível, sugira ações concretas que o usuário pode tomar para melhorar sua saúde financeira.
-        8. Inclua sugestões de **investimentos populares no Brasil**, tanto de renda fixa quanto variável, adequando ao perfil do usuário e oferecendo opções.
-        9. Evite citar a Receita Federal; prefira outras fontes confiáveis.
-        10. Se possível, combine insights dos PDFs com os dados do usuário para gerar recomendações mais precisas e contextualizadas.
+    Regras:
+    1. Responda em **até cinco sentenças**, sempre se referindo ao usuário como "você".
+    2. Analise padrões de gastos e investimentos, destacando categorias fora da curva e sugerindo ajustes quando necessário.
+    3. Gere **três recomendações concretas** por resposta, incluindo pelo menos uma dica prática de finanças ou investimento. Seja criativo, indo além de fundos de investimento.
+    4. Inclua sugestões de **investimentos populares no Brasil**, tanto de renda fixa quanto variável, adequadas ao perfil do usuário.
+    5. Utilize referências confiáveis sempre que possível (B3, CVM, Banco Central, IBGE, XP Investimentos, BTG Pactual), sem mencionar Receita Federal.
+    6. Priorize clareza e utilidade para **decisões financeiras pessoais atuais**; use dados dos dois meses anteriores apenas para comparação ou identificação de padrões.
+    7. Combine insights dos PDFs com os dados do usuário para gerar recomendações mais precisas e contextualizadas.
+    8. Formate as recomendações numeradas para facilitar leitura.
+    9. Nunca mencione que você é uma IA ou modelo de linguagem.
+    10. Sempre que possível, sugira ações concretas que o usuário pode tomar para melhorar sua saúde financeira.
+    11. Sempre que mencionar ativos financeiros, converta siglas em nomes amigáveis para o usuário
+    12. Sempre mostre o resumo do ativo escolhido para indicação
     '''
 
     response = qa_chain.run(f"{context}\nPergunta: {question}")
