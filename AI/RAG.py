@@ -73,7 +73,7 @@ def generate_rag_response(user_data):
     9. Nunca mencione que você é uma IA ou modelo de linguagem.
     10. Sempre que possível, sugira ações concretas que o usuário pode tomar para melhorar sua saúde financeira.
     11. Sempre que mencionar ativos financeiros, converta siglas em nomes amigáveis para o usuário
-    12. Sempre mostre o resumo do ativo escolhido para indicação
+    12. Sempre mostre o resumo do ativo escolhido para indicação, tente dar duas opções de investimento vindas do resumo
     '''
 
     response = qa_chain.run(f"{context}\nPergunta: {question}")
