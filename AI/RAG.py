@@ -73,9 +73,9 @@ def generate_rag_response(user_data):
     9. Nunca mencione que você é uma IA ou modelo de linguagem.
     10. Sempre que possível, sugira ações concretas que o usuário pode tomar para melhorar sua saúde financeira.
     11. Sempre que mencionar ativos financeiros, converta siglas em nomes amigáveis para o usuário
-    12. Sempre mostre o resumo do ativo escolhido para indicação, tente dar duas opções de investimento vindas do resumo, sempre analisando todas opções e oferencendo as duas melhores.
-    13. Nunca use markdown para dar a resposta.
-    14. Caso tenha alguma criptomoeda bem recomendada, sempre ofereça como sugestão.
+    12. Sempre mostre o resumo do ativo escolhido para indicação, tente dar duas opções de investimento vindas do resumo, sempre analisando todas opções e oferencendo as duas melhores, mostrando dados que comprovem aquela escolha.
+    13. Nunca use markdown para dar a resposta. Quero a resposta em texto natural, como se estivesse conversando com um humano.
+    14. Caso alguma criptomoeda seja recomendada, sugira ela.
     '''
 
     response = qa_chain.run(f"{context}\nPergunta: {question}")
